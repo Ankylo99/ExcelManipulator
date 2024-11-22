@@ -2,14 +2,8 @@
 {
     partial class Form1
     {
-        /// <summary>
-        /// Variable del diseñador necesaria.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Limpiar los recursos que se estén usando.
-        /// </summary>
         /// <param name="disposing">true si los recursos administrados se deben desechar; false en caso contrario.</param>
         protected override void Dispose(bool disposing)
         {
@@ -22,48 +16,40 @@
 
         #region Código generado por el Diseñador de Windows Forms
 
-        /// <summary>
-        /// Método necesario para admitir el Diseñador. No se puede modificar
-        /// el contenido de este método con el editor de código.
-        /// </summary>
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
             this.txtFilePath = new System.Windows.Forms.TextBox();
             this.btnSelectFile = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.dtpStartDate = new System.Windows.Forms.TextBox();
-            this.dtpEndDate = new System.Windows.Forms.TextBox();
+            this.txtStartDate = new System.Windows.Forms.TextBox();
+            this.txtEndDate = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnProcessFile = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
             // 
-            this.label1.AccessibleName = "Archivo Excel";
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
             this.label1.Location = new System.Drawing.Point(67, 59);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(127, 24);
             this.label1.TabIndex = 0;
             this.label1.Text = "Archivo Excel";
-            this.label1.Click += new System.EventHandler(this.label1_Click_1);
             // 
             // txtFilePath
             // 
-            this.txtFilePath.AccessibleName = "txtFilePath";
-            this.txtFilePath.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtFilePath.Location = new System.Drawing.Point(223, 61);
             this.txtFilePath.Name = "txtFilePath";
-            this.txtFilePath.Size = new System.Drawing.Size(176, 22);
+            this.txtFilePath.Size = new System.Drawing.Size(176, 20);
             this.txtFilePath.TabIndex = 1;
             // 
             // btnSelectFile
             // 
-            this.btnSelectFile.AccessibleName = "btnSelectFile";
-            this.btnSelectFile.AutoSize = true;
-            this.btnSelectFile.Location = new System.Drawing.Point(419, 62);
+            this.btnSelectFile.Location = new System.Drawing.Point(419, 61);
             this.btnSelectFile.Name = "btnSelectFile";
             this.btnSelectFile.Size = new System.Drawing.Size(112, 23);
             this.btnSelectFile.TabIndex = 2;
@@ -81,21 +67,19 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "Fecha Inicio";
             // 
-            // dtpStartDate
+            // txtStartDate
             // 
-            this.dtpStartDate.AccessibleName = "dtpStartDate";
-            this.dtpStartDate.Location = new System.Drawing.Point(223, 117);
-            this.dtpStartDate.Name = "dtpStartDate";
-            this.dtpStartDate.Size = new System.Drawing.Size(100, 20);
-            this.dtpStartDate.TabIndex = 5;
+            this.txtStartDate.Location = new System.Drawing.Point(223, 113);
+            this.txtStartDate.Name = "txtStartDate";
+            this.txtStartDate.Size = new System.Drawing.Size(176, 20);
+            this.txtStartDate.TabIndex = 5;
             // 
-            // dtpEndDate
+            // txtEndDate
             // 
-            this.dtpEndDate.AccessibleName = "dtpEndDate";
-            this.dtpEndDate.Location = new System.Drawing.Point(223, 158);
-            this.dtpEndDate.Name = "dtpEndDate";
-            this.dtpEndDate.Size = new System.Drawing.Size(100, 20);
-            this.dtpEndDate.TabIndex = 7;
+            this.txtEndDate.Location = new System.Drawing.Point(223, 154);
+            this.txtEndDate.Name = "txtEndDate";
+            this.txtEndDate.Size = new System.Drawing.Size(176, 20);
+            this.txtEndDate.TabIndex = 7;
             // 
             // label3
             // 
@@ -109,32 +93,52 @@
             // 
             // btnProcessFile
             // 
-            this.btnProcessFile.AccessibleName = "btnProcessFile";
-            this.btnProcessFile.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.btnProcessFile.Location = new System.Drawing.Point(166, 231);
+            this.btnProcessFile.Location = new System.Drawing.Point(223, 200);
             this.btnProcessFile.Name = "btnProcessFile";
-            this.btnProcessFile.Size = new System.Drawing.Size(75, 23);
+            this.btnProcessFile.Size = new System.Drawing.Size(100, 23);
             this.btnProcessFile.TabIndex = 8;
-            this.btnProcessFile.Text = "Processar";
+            this.btnProcessFile.Text = "Procesar Archivo";
             this.btnProcessFile.UseVisualStyleBackColor = true;
+            this.btnProcessFile.Click += new System.EventHandler(this.btnProcessFile_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.Color.Red;
+            this.label4.Location = new System.Drawing.Point(405, 120);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(81, 13);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "(YYYY-MM-DD)";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.ForeColor = System.Drawing.Color.Red;
+            this.label5.Location = new System.Drawing.Point(405, 157);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(81, 13);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "(YYYY-MM-DD)";
             // 
             // Form1
             // 
-            this.AccessibleName = "form1";
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(600, 300);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.btnProcessFile);
-            this.Controls.Add(this.dtpEndDate);
+            this.Controls.Add(this.txtEndDate);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.dtpStartDate);
+            this.Controls.Add(this.txtStartDate);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnSelectFile);
             this.Controls.Add(this.txtFilePath);
             this.Controls.Add(this.label1);
             this.Name = "Form1";
-            this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Text = "Manipulador de Excel";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -146,10 +150,11 @@
         private System.Windows.Forms.TextBox txtFilePath;
         private System.Windows.Forms.Button btnSelectFile;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox dtpStartDate;
-        private System.Windows.Forms.TextBox dtpEndDate;
+        private System.Windows.Forms.TextBox txtStartDate;
+        private System.Windows.Forms.TextBox txtEndDate;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnProcessFile;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
     }
 }
-
