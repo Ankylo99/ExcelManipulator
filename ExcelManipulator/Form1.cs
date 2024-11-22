@@ -25,8 +25,8 @@ namespace ExcelManipulator
         private void btnProcessFile_Click(object sender, EventArgs e)
         {
             string filePath = txtFilePath.Text;
-            string startDate = txtStartDate.Text;
-            string endDate = txtEndDate.Text;
+            string startDate = dtpStartDate.Value.ToString("yyyy-MM-dd"); // Formato de fecha
+            string endDate = dtpEndDate.Value.ToString("yyyy-MM-dd");
 
             if (string.IsNullOrEmpty(filePath))
             {

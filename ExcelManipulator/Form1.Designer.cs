@@ -22,12 +22,10 @@
             this.txtFilePath = new System.Windows.Forms.TextBox();
             this.btnSelectFile = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtStartDate = new System.Windows.Forms.TextBox();
-            this.txtEndDate = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnProcessFile = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.dtpStartDate = new System.Windows.Forms.DateTimePicker();
+            this.dtpEndDate = new System.Windows.Forms.DateTimePicker();
             this.SuspendLayout();
             // 
             // label1
@@ -67,20 +65,6 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "Fecha Inicio";
             // 
-            // txtStartDate
-            // 
-            this.txtStartDate.Location = new System.Drawing.Point(223, 113);
-            this.txtStartDate.Name = "txtStartDate";
-            this.txtStartDate.Size = new System.Drawing.Size(176, 20);
-            this.txtStartDate.TabIndex = 5;
-            // 
-            // txtEndDate
-            // 
-            this.txtEndDate.Location = new System.Drawing.Point(223, 154);
-            this.txtEndDate.Name = "txtEndDate";
-            this.txtEndDate.Size = new System.Drawing.Size(176, 20);
-            this.txtEndDate.TabIndex = 7;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -101,38 +85,29 @@
             this.btnProcessFile.UseVisualStyleBackColor = true;
             this.btnProcessFile.Click += new System.EventHandler(this.btnProcessFile_Click);
             // 
-            // label4
+            // dtpStartDate
             // 
-            this.label4.AutoSize = true;
-            this.label4.ForeColor = System.Drawing.Color.Red;
-            this.label4.Location = new System.Drawing.Point(405, 120);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(81, 13);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "(YYYY-MM-DD)";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
+            this.dtpStartDate.Location = new System.Drawing.Point(223, 113);
+            this.dtpStartDate.Name = "dtpStartDate";
+            this.dtpStartDate.Size = new System.Drawing.Size(200, 20);
+            this.dtpStartDate.TabIndex = 11;
             // 
-            // label5
+            // dtpEndDate
             // 
-            this.label5.AutoSize = true;
-            this.label5.ForeColor = System.Drawing.Color.Red;
-            this.label5.Location = new System.Drawing.Point(405, 157);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(81, 13);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "(YYYY-MM-DD)";
+            this.dtpEndDate.Location = new System.Drawing.Point(223, 154);
+            this.dtpEndDate.Name = "dtpEndDate";
+            this.dtpEndDate.Size = new System.Drawing.Size(200, 20);
+            this.dtpEndDate.TabIndex = 12;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(600, 300);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
+            this.Controls.Add(this.dtpEndDate);
+            this.Controls.Add(this.dtpStartDate);
             this.Controls.Add(this.btnProcessFile);
-            this.Controls.Add(this.txtEndDate);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.txtStartDate);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnSelectFile);
             this.Controls.Add(this.txtFilePath);
@@ -150,11 +125,9 @@
         private System.Windows.Forms.TextBox txtFilePath;
         private System.Windows.Forms.Button btnSelectFile;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtStartDate;
-        private System.Windows.Forms.TextBox txtEndDate;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnProcessFile;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.DateTimePicker dtpStartDate;
+        private System.Windows.Forms.DateTimePicker dtpEndDate;
     }
 }
