@@ -4,10 +4,19 @@ using System;
 using System.Drawing;
 using System.IO;
 using ExcelManipulator;
+using System.ComponentModel;
+using Mysqlx.Crud;
 
 public class ExcelDuplicator
 {
-    public void ProcessExcelFile(string filePath, string startDate, string endDate)
+    private int CurrentRow;
+    private int NumRowsPreciosCompra;
+    private int NumRowsComercioOcio;
+    private ExcelWorksheet sheet1;
+    private ExcelWorksheet sheet2;
+    private int progress = 0;
+    private int pasostotales;
+    public void ProcessExcelFile(string filePath, string startDate, string endDate, BackgroundWorker worker)
     {
         ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
 
@@ -15,37 +24,51 @@ public class ExcelDuplicator
         using (var package = new ExcelPackage(new FileInfo(filePath)))
         {
             // Acceder a las hojas
-            var sheet1 = package.Workbook.Worksheets[0];
-            var sheet2 = package.Workbook.Worksheets.Count > 1 ? package.Workbook.Worksheets[1] : null;
+            this.sheet1 = package.Workbook.Worksheets[0];
+            this.sheet2 = package.Workbook.Worksheets.Count > 1 ? package.Workbook.Worksheets[1] : null;
 
-            // Obtener el ID más alto
-            int maxId = GetMaxId(sheet1, 4, 17);
+            //Declarar cuantas filas hay en cada hoja
+            this.NumRowsPreciosCompra = GetNumRows(this.sheet1);
+            this.NumRowsComercioOcio = GetNumRows(this.sheet2);
 
-            // Duplicar registros en la primera hoja
-            DuplicarFilas1(sheet1, maxId, startDate);
+            //Contar todas los pasos que se han de hacer
+
+            pasostotales = CeldasTotales();
+
+            // Obtener el ID más alto de la hoja "precios compra"
+            int maxId = GetMaxId(4, 17);
+            //worker.ReportProgress(20);
+
+            // Duplicar registros en la primera hoja "precios compra"
+            DuplicarRegistrosHojaPreciosCompra(maxId, startDate, worker);
+            //worker.ReportProgress(40);
 
             // Asignar fecha_fin a las celdas sin fecha
-            FechaFin(sheet1, 4, 9, endDate);
+            AsignarFechaFinPreciosCompra(4, 9, endDate, worker);
+            //worker.ReportProgress(60);
 
-            // Duplicar registros en la segunda hoja (si existe)
+            // Duplicar registros en la segunda hoja (si existe) 
+            // por cada "id interno" de Precios compra 
             if (sheet2 != null)
             {
-                DuplicarFilas2(sheet2, maxId, startDate);
+                DuplicarRegistrosHojaComerciosOcio(maxId, startDate, worker);
+              //  worker.ReportProgress(80);
             }
 
             // Guardar cambios en un nuevo archivo
-            GuardarExcel(package, filePath);
+            GuardarExcel(package, filePath,worker);
+          //  worker.ReportProgress(100);
         }
     }
 
-    private int GetMaxId(ExcelWorksheet sheet, int startRow, int idColumn)
+    private int GetMaxId( int startRow, int idColumn)
     {
-        int lastRow = sheet.Dimension.End.Row;
+        int lastRow = this.sheet1.Dimension.End.Row;
         int maxId = 0;
 
         for (int row = startRow; row <= lastRow; row++)
         {
-            if (int.TryParse(sheet.Cells[row, idColumn].Text, out int id))
+            if (int.TryParse(this.sheet1.Cells[row, idColumn].Text, out int id))
             {
                 maxId = Math.Max(maxId, id);
             }
@@ -54,72 +77,106 @@ public class ExcelDuplicator
         return maxId;
     }
 
-    private void DuplicarFilas1(ExcelWorksheet sheet, int maxId, string startDate)
+    //Devolver el numero total de filas a partir de una inicial
+    private int GetNumRows(ExcelWorksheet sheet) 
     {
-        int lastRow = sheet.Dimension.End.Row;
+       return sheet.Dimension.End.Row;
+    }
 
-        for (int row = 4; row <= lastRow; row++)
+    private void DuplicarRegistrosHojaPreciosCompra( int maxId, string startDate, BackgroundWorker worker)
+    {
+        int lastRow = this.sheet1.Dimension.End.Row;
+
+        for (this.CurrentRow = 4; this.CurrentRow <= lastRow; this.CurrentRow++)
         {
-            int newRow = lastRow + (row - 3);
+            int newRow = lastRow + (this.CurrentRow - 3);
 
             // Copiar fila y cambiar color de fondo
-            for (int col = 1; col <= sheet.Dimension.End.Column; col++)
+            for (int col = 1; col <= this.sheet1.Dimension.End.Column; col++)
             {
-                sheet.Cells[newRow, col].Value = sheet.Cells[row, col].Value;
-                sheet.Cells[newRow, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                sheet.Cells[newRow, col].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                this.sheet1.Cells[newRow, col].Value = this.sheet1.Cells[this.CurrentRow, col].Value;
+                this.sheet1.Cells[newRow, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                this.sheet1.Cells[newRow, col].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+
+
+                this.progress++;
+                worker.ReportProgress((this.progress*100)/ pasostotales);
             }
 
             // Asignar nuevo ID y fecha de inicio
-            int suma = Convert.ToInt32(sheet.Cells[newRow, 17].Value);
-            sheet.Cells[newRow, 17].Value = (maxId + suma).ToString(); // ID con 8 dígitos
-            sheet.Cells[newRow, 3].Value = startDate; // Columna fecha_inicio
+            int suma = Convert.ToInt32(this.sheet1.Cells[newRow, 17].Value);
+            this.sheet1.Cells[newRow, 17].Value = (maxId + suma).ToString(); // ID con 8 dígitos
+            this.sheet1.Cells[newRow, 3].Value = startDate; // Columna fecha_inicio
         }
     }
 
-    private void DuplicarFilas2(ExcelWorksheet sheet, int maxId, string startDate)
+    private void DuplicarRegistrosHojaComerciosOcio(int maxId, string startDate, BackgroundWorker worker)
     {
-        int lastRow = sheet.Dimension.End.Row;
+        int lastRow = this.sheet2.Dimension.End.Row;
 
-        for (int row = 4; row <= lastRow; row++)
+        for (this.CurrentRow = 4; this.CurrentRow <= lastRow; this.CurrentRow++)
         {
-            int newRow = lastRow + (row - 3);
+            int newRow = lastRow + (this.CurrentRow - 3);
 
             // Copiar fila y cambiar color de fondo
-            for (int col = 1; col <= sheet.Dimension.End.Column; col++)
+            for (int col = 1; col <= this.sheet2.Dimension.End.Column; col++)
             {
-                sheet.Cells[newRow, col].Value = sheet.Cells[row, col].Value;
-                sheet.Cells[newRow, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                sheet.Cells[newRow, col].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                this.sheet2.Cells[newRow, col].Value = this.sheet2.Cells[this.CurrentRow, col].Value;
+                this.sheet2.Cells[newRow, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                this.sheet2.Cells[newRow, col].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+
+                this.progress++;
+                worker.ReportProgress((this.progress * 100) / pasostotales);
             }
 
             // Asignar nuevo ID y fecha de inicio
-            int suma = Convert.ToInt32(sheet.Cells[newRow, 1].Value);
-            sheet.Cells[newRow, 1].Value = (maxId + suma).ToString(); // ID
+            int suma = Convert.ToInt32(this.sheet2.Cells[newRow, 1].Value);
+            this.sheet2.Cells[newRow, 1].Value = (maxId + suma).ToString(); // ID
         }
     }
 
-    private void FechaFin(ExcelWorksheet sheet, int startRow, int dateColumn, string endDate)
+    private void AsignarFechaFinPreciosCompra( int startRow, int dateColumn, string endDate, BackgroundWorker worker)
     {
-        int lastRow = sheet.Dimension.End.Row;
+        int lastRow = this.sheet1.Dimension.End.Row;
 
-        for (int row = startRow; row <= lastRow; row++)
+        for (this.CurrentRow = startRow; this.CurrentRow <= lastRow; this.CurrentRow++)
         {
-            if (string.IsNullOrWhiteSpace(sheet.Cells[row, dateColumn].Text))
+            if (string.IsNullOrWhiteSpace(this.sheet1.Cells[this.CurrentRow, dateColumn].Text))
             {
-                sheet.Cells[row, dateColumn].Value = endDate;
-                sheet.Cells[row, dateColumn].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                sheet.Cells[row, dateColumn].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+                this.sheet1.Cells[this.CurrentRow, dateColumn].Value = endDate;
+                this.sheet1.Cells[this.CurrentRow, dateColumn].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                this.sheet1.Cells[this.CurrentRow, dateColumn].Style.Fill.BackgroundColor.SetColor(Color.LightYellow);
+
+                this.progress++;
+                worker.ReportProgress((this.progress * 100) / pasostotales);
             }
         }
     }
 
-    private void GuardarExcel(ExcelPackage package, string filePath)
+    private void GuardarExcel(ExcelPackage package, string filePath, BackgroundWorker worker)
     {
-        string newFilePath = Path.Combine(Path.GetDirectoryName(filePath), "Modified_" + Path.GetFileName(filePath));
+
+        worker.ReportProgress(100);
+        string newFilePath = Path.Combine(Path.GetDirectoryName(filePath), "Modificado_" + Path.GetFileName(filePath));
         package.SaveAs(new FileInfo(newFilePath));
 
-        bbdd dbHandler = new bbdd();
-        dbHandler.SaveExcelDataToDatabase(filePath);
+        // Guardado en base de datos, proxima feature, ya funciona
+       // bbdd dbHandler = new bbdd();
+       // dbHandler.SaveExcelDataToDatabase(filePath);
     }
+
+
+
+    //Calcula todas las celdas a editar, Todas las de "Precios Compra" + todas "Comercio Ocio" + las de la columna de "id_interno" en "Precios compra" y "Fecha_fin" en precios compra
+    public int CeldasTotales()
+    {
+            int Hoja1 = sheet1.Dimension.End.Row * sheet1.Dimension.End.Column;
+            int Hoja2 = sheet2.Dimension.End.Row * sheet2.Dimension.End.Column;
+
+
+
+            return Hoja1 + Hoja2 + (sheet1.Dimension.End.Row*2);
+    }
+
 }
+
