@@ -4,9 +4,31 @@ using System;
 using System.Drawing;
 using System.IO;
 using ExcelManipulator;
+using OfficeOpenXml.Drawing.Chart;
+using System.Windows.Forms;
 
 public class ExcelDuplicator
 {
+
+    private Label statusLabel;
+    public event Action<string> OnProgressChanged;
+    public ExcelDuplicator(Label label)
+    {
+        this.statusLabel = label;
+    }
+
+    private void UpdateStatus(string message)
+    {
+        if (statusLabel.InvokeRequired)
+        {
+            statusLabel.Invoke((MethodInvoker)(() => statusLabel.Text = message));
+        }
+        else
+        {
+            statusLabel.Text = message;
+        }
+    }
+
     public void ProcessExcelFile(string filePath, string startDate, string endDate)
     {
         ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
@@ -22,18 +44,22 @@ public class ExcelDuplicator
             int maxId = GetMaxId(sheet1, 4, 17);
 
             // Duplicar registros en la primera hoja
+            UpdateStatus("Duplicando registros...");
             DuplicarFilas1(sheet1, maxId, startDate);
 
             // Asignar fecha_fin a las celdas sin fecha
+            UpdateStatus("Asignando fecha de fin...");
             FechaFin(sheet1, 4, 9, endDate);
 
             // Duplicar registros en la segunda hoja (si existe)
             if (sheet2 != null)
             {
+                UpdateStatus("Duplicando registros en segunda hoja...");
                 DuplicarFilas2(sheet2, maxId, startDate);
             }
 
             // Guardar cambios en un nuevo archivo
+            UpdateStatus("Guardando cambios...");
             GuardarExcel(package, filePath);
         }
     }
@@ -56,6 +82,7 @@ public class ExcelDuplicator
 
     private void DuplicarFilas1(ExcelWorksheet sheet, int maxId, string startDate)
     {
+
         int lastRow = sheet.Dimension.End.Row;
 
         for (int row = 4; row <= lastRow; row++)
@@ -119,7 +146,7 @@ public class ExcelDuplicator
         string newFilePath = Path.Combine(Path.GetDirectoryName(filePath), "Modified_" + Path.GetFileName(filePath));
         package.SaveAs(new FileInfo(newFilePath));
 
-        bbdd dbHandler = new bbdd();
-        dbHandler.SaveExcelDataToDatabase(filePath);
+   //     bbdd dbHandler = new bbdd();
+   //     dbHandler.SaveExcelDataToDatabase(filePath);
     }
 }

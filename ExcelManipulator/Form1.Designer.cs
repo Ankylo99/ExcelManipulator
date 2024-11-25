@@ -18,6 +18,7 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.label1 = new System.Windows.Forms.Label();
             this.txtFilePath = new System.Windows.Forms.TextBox();
             this.btnSelectFile = new System.Windows.Forms.Button();
@@ -26,6 +27,10 @@
             this.btnProcessFile = new System.Windows.Forms.Button();
             this.dtpStartDate = new System.Windows.Forms.DateTimePicker();
             this.dtpEndDate = new System.Windows.Forms.DateTimePicker();
+            this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.loadingIcon = new System.Windows.Forms.PictureBox();
+            this.statusLabel = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.loadingIcon)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -77,13 +82,13 @@
             // 
             // btnProcessFile
             // 
-            this.btnProcessFile.Location = new System.Drawing.Point(223, 200);
+            this.btnProcessFile.Location = new System.Drawing.Point(488, 265);
             this.btnProcessFile.Name = "btnProcessFile";
             this.btnProcessFile.Size = new System.Drawing.Size(100, 23);
             this.btnProcessFile.TabIndex = 8;
             this.btnProcessFile.Text = "Procesar Archivo";
             this.btnProcessFile.UseVisualStyleBackColor = true;
-            this.btnProcessFile.Click += new System.EventHandler(this.btnProcessFile_Click);
+            this.btnProcessFile.Click += new System.EventHandler(this.btnProcessFile_ClickAsync);
             // 
             // dtpStartDate
             // 
@@ -99,11 +104,42 @@
             this.dtpEndDate.Size = new System.Drawing.Size(200, 20);
             this.dtpEndDate.TabIndex = 12;
             // 
+            // backgroundWorker
+            // 
+            this.backgroundWorker.WorkerReportsProgress = true;
+            this.backgroundWorker.WorkerSupportsCancellation = true;
+            // 
+            // loadingIcon
+            // 
+            this.loadingIcon.ErrorImage = ((System.Drawing.Image)(resources.GetObject("loadingIcon.ErrorImage")));
+            this.loadingIcon.Image = ((System.Drawing.Image)(resources.GetObject("loadingIcon.Image")));
+            this.loadingIcon.ImageLocation = "";
+            this.loadingIcon.InitialImage = null;
+            this.loadingIcon.Location = new System.Drawing.Point(223, 218);
+            this.loadingIcon.Name = "loadingIcon";
+            this.loadingIcon.Size = new System.Drawing.Size(33, 27);
+            this.loadingIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.loadingIcon.TabIndex = 14;
+            this.loadingIcon.TabStop = false;
+            this.loadingIcon.Visible = false;
+            this.loadingIcon.WaitOnLoad = true;
+            this.loadingIcon.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.AutoSize = true;
+            this.statusLabel.Location = new System.Drawing.Point(273, 232);
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(0, 13);
+            this.statusLabel.TabIndex = 15;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(600, 300);
+            this.Controls.Add(this.statusLabel);
+            this.Controls.Add(this.loadingIcon);
             this.Controls.Add(this.dtpEndDate);
             this.Controls.Add(this.dtpStartDate);
             this.Controls.Add(this.btnProcessFile);
@@ -114,6 +150,7 @@
             this.Controls.Add(this.label1);
             this.Name = "Form1";
             this.Text = "Manipulador de Excel";
+            ((System.ComponentModel.ISupportInitialize)(this.loadingIcon)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -129,5 +166,8 @@
         private System.Windows.Forms.Button btnProcessFile;
         private System.Windows.Forms.DateTimePicker dtpStartDate;
         private System.Windows.Forms.DateTimePicker dtpEndDate;
+        private System.ComponentModel.BackgroundWorker backgroundWorker;
+        private System.Windows.Forms.PictureBox loadingIcon;
+        private System.Windows.Forms.Label statusLabel;
     }
 }
