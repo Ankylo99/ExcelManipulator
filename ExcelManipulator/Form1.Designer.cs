@@ -27,10 +27,8 @@
             this.btnProcessFile = new System.Windows.Forms.Button();
             this.dtpStartDate = new System.Windows.Forms.DateTimePicker();
             this.dtpEndDate = new System.Windows.Forms.DateTimePicker();
-            this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
-            this.loadingIcon = new System.Windows.Forms.PictureBox();
-            this.statusLabel = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.loadingIcon)).BeginInit();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // label1
@@ -104,42 +102,39 @@
             this.dtpEndDate.Size = new System.Drawing.Size(200, 20);
             this.dtpEndDate.TabIndex = 12;
             // 
-            // backgroundWorker
+            // progressBar1
             // 
-            this.backgroundWorker.WorkerReportsProgress = true;
-            this.backgroundWorker.WorkerSupportsCancellation = true;
+            this.progressBar1.Visible = false; // Al principio no visible
+            this.progressBar1.Location = new System.Drawing.Point(223, 213);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(200, 23);
+            this.progressBar1.TabIndex = 13;
             // 
-            // loadingIcon
+            // backgroundWorker1
             // 
-            this.loadingIcon.ErrorImage = ((System.Drawing.Image)(resources.GetObject("loadingIcon.ErrorImage")));
-            this.loadingIcon.Image = ((System.Drawing.Image)(resources.GetObject("loadingIcon.Image")));
-            this.loadingIcon.ImageLocation = "";
-            this.loadingIcon.InitialImage = null;
-            this.loadingIcon.Location = new System.Drawing.Point(223, 218);
-            this.loadingIcon.Name = "loadingIcon";
-            this.loadingIcon.Size = new System.Drawing.Size(33, 27);
-            this.loadingIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.loadingIcon.TabIndex = 14;
-            this.loadingIcon.TabStop = false;
-            this.loadingIcon.Visible = false;
-            this.loadingIcon.WaitOnLoad = true;
-            this.loadingIcon.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
-            // statusLabel
+            // lblStatus
             // 
-            this.statusLabel.AutoSize = true;
-            this.statusLabel.Location = new System.Drawing.Point(273, 232);
-            this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(0, 13);
-            this.statusLabel.TabIndex = 15;
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lblStatus.Location = new System.Drawing.Point(223, 240);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(100, 17);
+            this.lblStatus.TabIndex = 14;
+            this.lblStatus.Text = "";  // Aquí el mensaje inicial está vacío.
+            this.lblStatus.Visible = false; // Al principio no visible
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(600, 300);
-            this.Controls.Add(this.statusLabel);
-            this.Controls.Add(this.loadingIcon);
+            this.Controls.Add(this.lblStatus);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.dtpEndDate);
             this.Controls.Add(this.dtpStartDate);
             this.Controls.Add(this.btnProcessFile);
@@ -166,8 +161,8 @@
         private System.Windows.Forms.Button btnProcessFile;
         private System.Windows.Forms.DateTimePicker dtpStartDate;
         private System.Windows.Forms.DateTimePicker dtpEndDate;
-        private System.ComponentModel.BackgroundWorker backgroundWorker;
-        private System.Windows.Forms.PictureBox loadingIcon;
-        private System.Windows.Forms.Label statusLabel;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.Label lblStatus;
     }
 }
