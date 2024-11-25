@@ -4,34 +4,6 @@ using System;
 using System.Drawing;
 using System.IO;
 using ExcelManipulator;
-<<<<<<< HEAD
-using OfficeOpenXml.Drawing.Chart;
-using System.Windows.Forms;
-
-public class ExcelDuplicator
-{
-
-    private Label statusLabel;
-    public event Action<string> OnProgressChanged;
-    public ExcelDuplicator(Label label)
-    {
-        this.statusLabel = label;
-    }
-
-    private void UpdateStatus(string message)
-    {
-        if (statusLabel.InvokeRequired)
-        {
-            statusLabel.Invoke((MethodInvoker)(() => statusLabel.Text = message));
-        }
-        else
-        {
-            statusLabel.Text = message;
-        }
-    }
-
-    public void ProcessExcelFile(string filePath, string startDate, string endDate)
-=======
 using System.ComponentModel;
 using Mysqlx.Crud;
 
@@ -45,7 +17,6 @@ public class ExcelDuplicator
     private int progress = 0;
     private int pasostotales;
     public void ProcessExcelFile(string filePath, string startDate, string endDate, BackgroundWorker worker)
->>>>>>> carga
     {
         ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
 
@@ -60,15 +31,6 @@ public class ExcelDuplicator
             this.NumRowsPreciosCompra = GetNumRows(this.sheet1);
             this.NumRowsComercioOcio = GetNumRows(this.sheet2);
 
-<<<<<<< HEAD
-            // Duplicar registros en la primera hoja
-            UpdateStatus("Duplicando registros...");
-            DuplicarFilas1(sheet1, maxId, startDate);
-
-            // Asignar fecha_fin a las celdas sin fecha
-            UpdateStatus("Asignando fecha de fin...");
-            FechaFin(sheet1, 4, 9, endDate);
-=======
             //Contar todas los pasos que se han de hacer
 
             pasostotales = CeldasTotales();
@@ -84,21 +46,11 @@ public class ExcelDuplicator
             // Asignar fecha_fin a las celdas sin fecha
             AsignarFechaFinPreciosCompra(4, 9, endDate, worker);
             //worker.ReportProgress(60);
->>>>>>> carga
 
             // Duplicar registros en la segunda hoja (si existe) 
             // por cada "id interno" de Precios compra 
             if (sheet2 != null)
             {
-<<<<<<< HEAD
-                UpdateStatus("Duplicando registros en segunda hoja...");
-                DuplicarFilas2(sheet2, maxId, startDate);
-            }
-
-            // Guardar cambios en un nuevo archivo
-            UpdateStatus("Guardando cambios...");
-            GuardarExcel(package, filePath);
-=======
                 DuplicarRegistrosHojaComerciosOcio(maxId, startDate, worker);
               //  worker.ReportProgress(80);
             }
@@ -106,7 +58,6 @@ public class ExcelDuplicator
             // Guardar cambios en un nuevo archivo
             GuardarExcel(package, filePath,worker);
           //  worker.ReportProgress(100);
->>>>>>> carga
         }
     }
 
@@ -129,13 +80,8 @@ public class ExcelDuplicator
     //Devolver el numero total de filas a partir de una inicial
     private int GetNumRows(ExcelWorksheet sheet) 
     {
-<<<<<<< HEAD
-
-        int lastRow = sheet.Dimension.End.Row;
-=======
        return sheet.Dimension.End.Row;
     }
->>>>>>> carga
 
     private void DuplicarRegistrosHojaPreciosCompra( int maxId, string startDate, BackgroundWorker worker)
     {
@@ -214,14 +160,9 @@ public class ExcelDuplicator
         string newFilePath = Path.Combine(Path.GetDirectoryName(filePath), "Modificado_" + Path.GetFileName(filePath));
         package.SaveAs(new FileInfo(newFilePath));
 
-<<<<<<< HEAD
-   //     bbdd dbHandler = new bbdd();
-   //     dbHandler.SaveExcelDataToDatabase(filePath);
-=======
         // Guardado en base de datos, proxima feature, ya funciona
        // bbdd dbHandler = new bbdd();
        // dbHandler.SaveExcelDataToDatabase(filePath);
->>>>>>> carga
     }
 
 

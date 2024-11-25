@@ -1,12 +1,7 @@
-<<<<<<< HEAD
 ﻿using OfficeOpenXml.Table;
 using Org.BouncyCastle.Asn1.Cmp;
 using System;
-using System.Threading.Tasks;
-=======
-﻿using System;
 using System.ComponentModel;
->>>>>>> carga
 using System.Windows.Forms;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,14 +34,6 @@ namespace ExcelManipulator
             }
         }
 
-<<<<<<< HEAD
-        private async void btnProcessFile_ClickAsync(object sender, EventArgs e)
-        {
-            loadingIcon.Visible = true;
-            statusLabel.Text = "Cargando archivo...";
-
-            
-=======
 
         // Este es el método que va a ejecutar el BackgroundWorker
         private void btnProcessFile_Click(object sender, EventArgs e)
@@ -57,7 +44,6 @@ namespace ExcelManipulator
             progressBar1.Visible = true;
             lblStatus.Visible = true;
             lblStatus.Text = "Iniciando el proceso...";
->>>>>>> carga
 
             string filePath = txtFilePath.Text;
             string startDate = dtpStartDate.Value.ToString("yyyy-MM-dd"); // Formato de fecha
@@ -89,21 +75,12 @@ namespace ExcelManipulator
 
             try
             {
-<<<<<<< HEAD
-                await Task.Run(() =>
-                {
-                    var duplicator = new ExcelDuplicator(statusLabel);
-                    duplicator.ProcessExcelFile(filePath, startDate, endDate);
-                    MessageBox.Show("El archivo Excel se procesó correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                });
-=======
                 // Crear el duplicador de Excel
                 ExcelDuplicator duplicator = new ExcelDuplicator();
                 // Pasar el BackgroundWorker para actualizar el progreso
 
                 duplicator.ProcessExcelFile(filePath, startDate, endDate, backgroundWorker1);
                
->>>>>>> carga
             }
             catch (Exception ex)
             {
@@ -147,12 +124,6 @@ namespace ExcelManipulator
             }
         }
 
-<<<<<<< HEAD
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
-=======
     
         // Este método se llama cuando el BackgroundWorker termina
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -170,7 +141,6 @@ namespace ExcelManipulator
         }
 
 
->>>>>>> carga
     }
 }
 
